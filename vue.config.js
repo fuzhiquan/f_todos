@@ -7,5 +7,12 @@ module.exports = defineConfig({
       entry: 'src/main.js',
       title: "TodoList"
     }
+  },
+  devServer: {
+    proxy: {
+      "/api": {
+        target: "http://192.168.123.172:8080"
+      }
+    }
   }
 })
