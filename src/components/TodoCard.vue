@@ -21,8 +21,17 @@
 </script>
 <style scoped>
     .container-card {
+        display: flex;
+        justify-content: space-around;
         margin-top: 10px;
+        padding: 10px 5px;
         text-align: left;
+        overflow: hidden;
         border: 1px solid gray;
+        border-radius: 5px;
+    }
+    .container-card > div {
+        border: 1px solid gray;
+        border-radius: 5px;
     }
 </style>
