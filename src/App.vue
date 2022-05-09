@@ -3,7 +3,10 @@
     <img alt="Vue logo" src="./assets/logo.png">
     <div>
       <TodoInput @addTodo="addTodo"/>
-      <TodoList :todoList="todoList"/>
+	  <TodoContent>
+		  <TodoList slot="list" :todoList="todoList"/>
+		  <TodoCard slot="card" :todoList="todoList"/>
+	  </TodoContent>
       <TodoFooter :checkedNum="checkedNum" :totalNum="totalNum" @toggleAllHandler="toggleAllHandler"/>
     </div>
   </div>
@@ -11,14 +14,18 @@
 
 <script>
 import TodoInput from "./components/TodoInput"
-import TodoList from "./components/TodoList"
+import TodoContent from "./components/TodoContent"
 import TodoFooter from "./components/TodoFooter"
+import TodoList from "./components/TodoList"
+import TodoCard from "./components/TodoCard"
 
 export default {
 	name: 'App',
 	components: {
 		TodoInput,
+		TodoContent,
 		TodoList,
+		TodoCard,
 		TodoFooter
 	},
 	data() {
@@ -87,9 +94,6 @@ export default {
 		text-align: center;
 		color: #2c3e50;
 		margin-top: 60px;
-	}
-	input[type=checkbox] {
-		cursor: pointer;
 	}
 	input[type=checkbox]:disabled {
 		cursor: default;
