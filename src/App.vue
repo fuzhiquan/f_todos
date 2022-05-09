@@ -23,7 +23,7 @@ export default {
 	},
 	data() {
 		return {
-			todoList: JSON.parse(localStorage.getItem("todoList")) || []
+			todoList: []
 		}
 	},
 	methods: {
@@ -57,7 +57,7 @@ export default {
 		todoList: {
 			deep: true,
 			handler(value) {
-				localStorage.setItem("todoList", JSON.stringify(value))
+				//localStorage.setItem("todoList", JSON.stringify(value))
 			}
 		}
 	},
