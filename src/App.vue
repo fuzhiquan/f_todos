@@ -4,8 +4,12 @@
     <div>
       <TodoInput @addTodo="addTodo"/>
 	  <TodoContent>
-		  <TodoList slot="list" :todoList="todoList"/>
-		  <TodoCard slot="card" :todoList="todoList"/>
+		  <template v-slot:list>
+			  <TodoList :todoList="todoList"/>
+		  </template>
+		  <template v-slot:card>
+			  <TodoCard :todoList="todoList"/>
+		  </template>
 	  </TodoContent>
       <TodoFooter :checkedNum="checkedNum" :totalNum="totalNum" @toggleAllHandler="toggleAllHandler"/>
     </div>
