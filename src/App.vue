@@ -5,13 +5,13 @@
       <TodoInput @addTodo="addTodo"/>
 	  <TodoContent>
 		  <template v-slot:list>
-			  <TodoList :todoList="todoList"/>
+			  <TodoList :todoList="$store.state.todos"/>
 		  </template>
 		  <template v-slot:card>
-			  <TodoCard :todoList="todoList"/>
+			  <TodoCard :todoList="$store.state.todos"/>
 		  </template>
 	  </TodoContent>
-      <TodoFooter :checkedNum="checkedNum" :totalNum="totalNum" @toggleAllHandler="toggleAllHandler"/>
+      <TodoFooter :checkedNum="$store.getters.todoCheckedLen" :totalNum="$store.getters.todoLen" @toggleAllHandler="toggleAllHandler"/>
     </div>
   </div>
 </template>
@@ -32,36 +32,21 @@ export default {
 		TodoCard,
 		TodoFooter
 	},
-	data() {
-		return {
-			todoList: []
-		}
-	},
 	methods: {
 		addTodo(todo) {
-			const todoObj = {id: crypto.randomUUID(), text: todo, checked: false}
-			this.todoList.unshift(todoObj)
+			this.$store.dispatch("addTodo", todo)
 		},
 		delTodo(id) {
-			const index = this.todoList.findIndex(todo => todo.id === id)
-			index > -1 && this.todoList.splice(index, 1)
+			this.$store.dispatch("delTodo", id)
 		},
 		toggleTodoHandler(id) {
-			const index = this.todoList.findIndex(todo => todo.id === id)
-			index > -1 && (this.todoList[index]["checked"] = !this.todoList[index]["checked"])
+			const index = this.$store.state.todos.findIndex(todo => todo.id === id)
+			index > -1 && (this.$store.state.todos[index]["checked"] = !this.$store.state.todos[index]["checked"])
 		},
 		toggleAllHandler(checked) {
-			this.todoList.forEach(todo => {
+			this.$store.state.todos.forEach(todo => {
 				todo.checked = checked
 			})
-		}
-	},
-	computed: {
-		checkedNum() {
-			return this.todoList.filter(todo => todo.checked).length
-		},
-		totalNum() {
-			return this.todoList.length
 		}
 	},
 	watch: {
@@ -79,7 +64,7 @@ export default {
 			return res.json()
 		}).then(data => {
 			if(data.code == 200) {
-				this.todoList = data.data
+				//this.todoList = data.data
 			}
 		})
 	},
