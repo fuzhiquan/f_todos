@@ -34,7 +34,7 @@ export default {
 		TodoFooter
 	},
 	methods: {
-		...mapActions(["addTodo", "delTodo"]),
+		...mapActions(["fetchTodo", "addTodo", "delTodo"]),
 		toggleTodoHandler(id) {
 			const index = this.todos.findIndex(todo => todo.id === id)
 			index > -1 && (this.todos[index]["checked"] = !this.todos[index]["checked"])
@@ -60,13 +60,7 @@ export default {
 	mounted() {
 		this.$bus.$on("delTodo", this.delTodo)
 		this.$bus.$on("toggleTodoHandler", this.toggleTodoHandler)
-		fetch("http://localhost:8080/api/todos").then(res => {
-			return res.json()
-		}).then(data => {
-			if(data.code == 200) {
-				//this.todoList = data.data
-			}
-		})
+		this.fetchTodo()
 	},
 	beforeDestroy() {
 		this.$bus.$off("delTodo")

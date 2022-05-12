@@ -16,6 +16,15 @@ const getters = {
     }
 }
 const actions = {
+    fetchTodo(context) {
+        fetch("http://localhost:8080/api/todos").then(res => {
+			return res.json()
+		}).then(data => {
+			if(data.code == 200) {
+                context.commit(actionType.fetchTodo, data.data)
+			}
+		})
+    },
     addTodo(context, todo) {
         const todoObj = {id: crypto.randomUUID(), text: todo, checked: false}
 		context.commit(actionType.addTodo, todoObj)
@@ -26,6 +35,9 @@ const actions = {
     }
 }
 const mutations = {
+    [actionType.fetchTodo](state, todos) {
+        state.todos = todos
+    },
     [actionType.addTodo](state, todo) {
         state.todos.unshift(todo)
     },
