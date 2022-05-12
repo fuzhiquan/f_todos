@@ -5,18 +5,19 @@
       <TodoInput @addTodo="addTodo"/>
 	  <TodoContent>
 		  <template v-slot:list>
-			  <TodoList :todoList="$store.state.todos"/>
+			  <TodoList :todoList="todos"/>
 		  </template>
 		  <template v-slot:card>
-			  <TodoCard :todoList="$store.state.todos"/>
+			  <TodoCard :todoList="todos"/>
 		  </template>
 	  </TodoContent>
-      <TodoFooter :checkedNum="$store.getters.todoCheckedLen" :totalNum="$store.getters.todoLen" @toggleAllHandler="toggleAllHandler"/>
+      <TodoFooter :checkedNum="todoCheckedLen" :totalNum="todoLen" @toggleAllHandler="toggleAllHandler"/>
     </div>
   </div>
 </template>
 
 <script>
+import {mapState, mapGetters, mapActions} from "vuex"
 import TodoInput from "./components/TodoInput"
 import TodoContent from "./components/TodoContent"
 import TodoFooter from "./components/TodoFooter"
@@ -33,21 +34,20 @@ export default {
 		TodoFooter
 	},
 	methods: {
-		addTodo(todo) {
-			this.$store.dispatch("addTodo", todo)
-		},
-		delTodo(id) {
-			this.$store.dispatch("delTodo", id)
-		},
+		...mapActions(["addTodo", "delTodo"]),
 		toggleTodoHandler(id) {
-			const index = this.$store.state.todos.findIndex(todo => todo.id === id)
-			index > -1 && (this.$store.state.todos[index]["checked"] = !this.$store.state.todos[index]["checked"])
+			const index = this.todos.findIndex(todo => todo.id === id)
+			index > -1 && (this.todos[index]["checked"] = !this.todos[index]["checked"])
 		},
 		toggleAllHandler(checked) {
-			this.$store.state.todos.forEach(todo => {
+			this.todos.forEach(todo => {
 				todo.checked = checked
 			})
 		}
+	},
+	computed: {
+		...mapState(["todos"]),
+		...mapGetters(["todoCheckedLen", "todoLen"])
 	},
 	watch: {
 		todoList: {
