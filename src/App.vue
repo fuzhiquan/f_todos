@@ -11,7 +11,7 @@
 			  <TodoCard :todoList="todos"/>
 		  </template>
 	  </TodoContent>
-      <TodoFooter :checkedNum="todoCheckedLen" :totalNum="todoLen" @toggleAllHandler="toggleAllHandler"/>
+      <TodoFooter :checkedNum="todoCheckedLen" :totalNum="todoLen" @toggleAllHandler="checkedAllTodo"/>
     </div>
   </div>
 </template>
@@ -34,37 +34,21 @@ export default {
 		TodoFooter
 	},
 	methods: {
-		...mapActions(["fetchTodo", "addTodo", "delTodo"]),
-		toggleTodoHandler(id) {
-			const index = this.todos.findIndex(todo => todo.id === id)
-			index > -1 && (this.todos[index]["checked"] = !this.todos[index]["checked"])
-		},
-		toggleAllHandler(checked) {
-			this.todos.forEach(todo => {
-				todo.checked = checked
-			})
-		}
+		...mapActions("todosAbout", ["fetchTodo", "addTodo", "delTodo", "checkedTodo", "checkedAllTodo"])
 	},
 	computed: {
-		...mapState(["todos"]),
-		...mapGetters(["todoCheckedLen", "todoLen"])
-	},
-	watch: {
-		todoList: {
-			deep: true,
-			handler(value) {
-				//localStorage.setItem("todoList", JSON.stringify(value))
-			}
-		}
+		...mapState("todosAbout", ["todos"]),
+		...mapGetters("todosAbout", ["todoCheckedLen", "todoLen"])
 	},
 	mounted() {
 		this.$bus.$on("delTodo", this.delTodo)
-		this.$bus.$on("toggleTodoHandler", this.toggleTodoHandler)
+		this.$bus.$on("checkedTodo", this.checkedTodo)
 		this.fetchTodo()
+		console.log(this)
 	},
 	beforeDestroy() {
 		this.$bus.$off("delTodo")
-		this.$bus.$off("toggleTodoHandler")
+		this.$bus.$off("checkedTodo")
 	}
 }
 </script>

@@ -24,7 +24,7 @@ export default {
             this.$bus.$emit("delTodo", id)
         },
         changeHandler(id) {
-            this.$bus.$emit("toggleTodoHandler", id)
+            this.$bus.$emit("checkedTodo", id)
         }
     }
 }
