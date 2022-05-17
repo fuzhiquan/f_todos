@@ -22,7 +22,7 @@ import TodoList from "../components/TodoList"
 import TodoCard from "../components/TodoCard"
 
 export default {
-	name: 'App',
+	name: 'Todos',
 	components: {
 		TodoInput,
 		TodoContent,
@@ -41,11 +41,16 @@ export default {
 		this.$bus.$on("delTodo", this.delTodo)
 		this.$bus.$on("checkedTodo", this.checkedTodo)
 		this.fetchTodo()
-		console.log(this)
 	},
 	beforeDestroy() {
 		this.$bus.$off("delTodo")
 		this.$bus.$off("checkedTodo")
+	},
+	activated() {
+		console.log("活了")
+	},
+	deactivated() {
+		console.log("凉了")
 	}
 }
 </script>

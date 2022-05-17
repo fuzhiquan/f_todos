@@ -5,7 +5,9 @@
 		<router-link to="/home" active-class="active">home</router-link>
 		<router-link to="/todos" active-class="active">todos</router-link>
     </div>
-	<router-view></router-view>
+	<keep-alive include="Todos">
+		<router-view></router-view>
+	</keep-alive>
   </div>
 </template>
 
