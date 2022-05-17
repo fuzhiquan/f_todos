@@ -47,10 +47,18 @@ export default {
 		this.$bus.$off("checkedTodo")
 	},
 	activated() {
-		console.log("活了")
+		console.log("活了，只有组件被缓存时才调用")
 	},
 	deactivated() {
-		console.log("凉了")
+		console.log("凉了，只有组件被缓存时才调用")
+	},
+	beforeRouteEnter(to, from, next) {
+		console.log("路由配置来了", to, from)
+		next()
+	},
+	beforeRouteLeave(to, from, next) {
+		console.log("路由配置bye")
+		next()
 	}
 }
 </script>

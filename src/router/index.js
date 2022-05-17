@@ -4,20 +4,36 @@ import Todos from "../pages/Todos"
 import User from "../pages/User"
 import Salary from "../pages/Salary"
 
-export default new VueRouter({
+const router = new VueRouter({
+    mode: "history",
     routes: [
         {
             path: "/home",
             component: Home,
+            meta: {
+                title: "Home"
+            },
             children: [
                 {
                     path: "user",
-                    component: User
+                    component: User,
+                    meta: {
+                        title: "User"
+                    },
+                    beforeEnter(to, from, next) {// 独享路由守卫
+                        console.log("独享路由守卫", to, from)
+                        if(to.path === "/home/user") {
+                            next()
+                        }
+                    }
                 },
                 {
                     name: "salary",
                     path: "salary",
                     component: Salary,
+                    meta: {
+                        title: "Salary"
+                    },
                     //props的第一种写法，值为对象，该对象中的所有key-value都会以props的形式传给Detail组件。
 					// props:{a:1,b:'2'}
 
@@ -35,7 +51,19 @@ export default new VueRouter({
         },
         {
             path: "/todos",
-            component: Todos
+            component: Todos,
+            meta: {
+                title: "Todos"
+            }
         }
     ]
 })
+// 全局路由守卫
+router.beforeEach((to, from, next) => {
+    console.log("全局路由",to, from)
+    next()
+})
+router.afterEach((to, from) => {
+    document.title = to.meta.title || "TodoList"
+})
+export default router
